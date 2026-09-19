@@ -1,0 +1,545 @@
+/* =========================================================
+   1. DESIGN TOKENS
+   Change a colour or font here and it updates everywhere.
+   ========================================================= */
+:root {
+  --teal:  #0e6b63;   /* main brand colour: hero, footer, big verbs */
+  --plum:  #2b1236;   /* deep purple: text and the work section */
+  --paper: #f2f6f3;   /* light page background, a hint of green */
+  --coral: #ff6f59;   /* bright accent: buttons, tools strip, links on dark */
+  --peach: #ffd9cf;   /* soft coral: surname and text on teal */
+  --mint:  #cfeee4;   /* soft teal: highlights and secondary text */
+
+  --display: 'Syne', 'Arial Black', sans-serif;
+  --body:    'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+}
+
+/* =========================================================
+   2. RESET AND BASICS
+   ========================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--plum);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+h1, h2, h3, p, ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+/* Visible outline when someone navigates with the keyboard.
+   The colour changes per section so it always stands out from the background. */
+:focus-visible {
+  outline: 3px solid var(--teal);
+  outline-offset: 3px;
+}
+
+.hero :focus-visible,
+.contact :focus-visible {
+  outline-color: var(--peach);
+}
+
+.work :focus-visible {
+  outline-color: var(--coral);
+}
+
+/* =========================================================
+   3. LAYOUT HELPERS
+   .wrap keeps content in a centred column.
+   .section gives every block the same vertical breathing room.
+   ========================================================= */
+.wrap {
+  max-width: 70rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+.section-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 2.25rem;
+}
+
+/* =========================================================
+   4. HERO  (the one big, bold moment)
+   The first name steps in, the surname sits flush left in a
+   softer colour. The intro and buttons share a row underneath.
+   ========================================================= */
+.hero {
+  background: var(--teal);
+  color: #fff;
+}
+
+.name {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2.1rem, 10.5vw, 7.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 2.5rem;
+}
+
+.name span {
+  display: block;
+}
+
+/* Step the first name in from the left */
+.name span:first-child {
+  margin-left: 1.1em;
+}
+
+/* Surname in soft peach so the two lines feel different */
+.name span:last-child {
+  color: var(--peach);
+}
+
+.hero-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 2rem 3rem;
+  align-items: end;
+  padding-top: 1.75rem;
+  border-top: 2px solid rgba(255, 217, 207, 0.45);
+}
+
+.hero-role {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  margin-bottom: 0.75rem;
+}
+
+.hero-intro {
+  max-width: 36rem;
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  color: var(--mint);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.6rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid var(--coral);
+  border-radius: 999px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-solid {
+  background: var(--coral);
+  color: var(--plum);
+}
+
+.btn-solid:hover {
+  background: var(--peach);
+  border-color: var(--peach);
+}
+
+.btn-line {
+  border-color: var(--peach);
+  color: var(--peach);
+}
+
+.btn-line:hover {
+  background: var(--peach);
+  color: var(--plum);
+}
+
+/* =========================================================
+   5. TOOLS STRIP (scrolling)
+   Now scrolls to the right, with a small dot between tools.
+   ========================================================= */
+.tools {
+  background: var(--coral);
+  color: var(--plum);
+  overflow: hidden;
+  padding-block: 1.1rem;
+}
+
+.tools-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-right 60s linear infinite;
+}
+
+/* Each copy of the list has padding on the right so both copies match */
+.tools-group {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding-right: 2rem;
+}
+
+.tools-group li {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+  white-space: nowrap;
+}
+
+/* The dot after each tool */
+.tools-group li::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-left: 2rem;
+  background: var(--plum);
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+/* Start one copy to the left, slide back to zero, then repeat: looks endless */
+@keyframes scroll-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* =========================================================
+   6. WHAT I DO  (Fix / Build / Buy / Organise)
+   Each verb is now a coloured sticker with a slight tilt.
+   ========================================================= */
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 1.5rem 3rem;
+  padding-block: 2rem;
+  border-top: 2px solid var(--plum);
+}
+
+.row:last-child {
+  border-bottom: 2px solid var(--plum);
+}
+
+.verb {
+  justify-self: start;
+  align-self: start;
+  padding: 0.35rem 1.25rem 0.55rem;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2rem, 4.6vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+  border: 2px solid var(--plum);
+  border-radius: 1.5rem 1.5rem 1.5rem 0.25rem;
+}
+
+/* Each sticker gets its own colours (nth-of-type counts the articles: 1st, 2nd, 3rd, 4th) */
+.row:nth-of-type(1) .verb {
+  background: var(--teal);
+  color: #fff;
+  transform: rotate(-1.5deg);
+}
+
+.row:nth-of-type(2) .verb {
+  background: var(--coral);
+  color: var(--plum);
+  transform: rotate(1.5deg);
+}
+
+.row:nth-of-type(3) .verb {
+  background: var(--plum);
+  color: var(--peach);
+  transform: rotate(-1.5deg);
+}
+
+.row:nth-of-type(4) .verb {
+  background: var(--mint);
+  color: var(--teal);
+  transform: rotate(1.5deg);
+}
+
+.row-lead {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.row-body li {
+  padding-block: 0.3rem;
+}
+
+/* =========================================================
+   7. WORK HISTORY (dark section, now a timeline)
+   Dates sit on the left, a line runs down the middle, and
+   each job gets a coral dot on that line.
+   ========================================================= */
+.work {
+  background: var(--plum);
+  color: #fff;
+}
+
+.work .section-title {
+  color: var(--coral);
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.4fr);
+  gap: 0.5rem 0;
+}
+
+.entry-dates {
+  padding: 0.3rem 2rem 0 0;
+  text-align: right;
+  font-weight: 600;
+  color: var(--mint);
+}
+
+.entry-body {
+  position: relative;
+  padding: 0 0 3rem 2.5rem;
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* The last job ends the line, so it gets no extra space below */
+.entry:last-child .entry-body {
+  padding-bottom: 0;
+}
+
+/* The dot sits on top of the line */
+.entry-body::before {
+  content: "";
+  position: absolute;
+  top: 0.4rem;
+  left: calc(-0.6rem - 1px);   /* half the dot's width, plus half the line's width */
+  width: 1.2rem;
+  height: 1.2rem;
+  background: var(--coral);
+  border: 3px solid var(--plum);
+  border-radius: 50%;
+}
+
+.entry-title {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+
+.entry-place {
+  color: var(--mint);
+  margin-bottom: 0.75rem;
+}
+
+.work details {
+  margin-top: 1.25rem;
+}
+
+.work summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--coral);
+}
+
+.work summary:hover {
+  text-decoration: underline;
+}
+
+.work details ul {
+  margin-top: 0.75rem;
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+
+.work details li {
+  padding-block: 0.25rem;
+}
+
+/* =========================================================
+   8. LEARNING
+   One tall "In progress" panel on the left, the other two
+   stacked on the right. grid-template-areas lets you draw
+   the layout with words.
+   ========================================================= */
+.learn-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "progress certs"
+    "progress ai";
+  gap: 2rem 3rem;
+}
+
+.in-progress { grid-area: progress; }
+.certs       { grid-area: certs; }
+.ai          { grid-area: ai; }
+
+.learn-group {
+  padding-top: 1.25rem;
+  border-top: 3px solid var(--plum);
+}
+
+.learn-group h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.learn-group li {
+  padding-block: 0.25rem;
+}
+
+/* The in-progress panel has a dashed border on purpose: it is unfinished work */
+.learn-group.in-progress {
+  padding: 2rem;
+  background: var(--coral);
+  border: 3px dashed var(--plum);
+  border-radius: 1.5rem;
+}
+
+.learn-group.in-progress h3 {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+}
+
+.learn-note {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+/* =========================================================
+   9. CONTACT FOOTER
+   ========================================================= */
+.contact {
+  background: var(--teal);
+  color: #fff;
+}
+
+.contact-lead {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  margin-bottom: 0.75rem;
+}
+
+.contact-mail {
+  display: inline-block;
+  max-width: 100%;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 4.6vw, 3.2rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #fff;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-color: var(--coral);
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.15em;
+  transition: text-decoration-thickness 0.2s;
+}
+
+.contact-mail:hover {
+  text-decoration-thickness: 0.2em;
+}
+
+.contact-links {
+  margin-top: 1.25rem;
+  font-weight: 600;
+}
+
+.contact-small {
+  margin-top: 2.5rem;
+  color: var(--mint);
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   10. SMALL SCREENS
+   Everything that was side by side stacks into one column.
+   ========================================================= */
+@media (max-width: 44rem) {
+  .hero-foot,
+  .row,
+  .entry {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions {
+    justify-content: flex-start;
+  }
+
+  .row {
+    gap: 0.75rem;
+  }
+
+  .entry-dates {
+    padding: 0 0 0.5rem 1.5rem;
+    text-align: left;
+  }
+
+  .entry-body {
+    padding-left: 1.5rem;
+  }
+
+  .learn-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "progress"
+      "certs"
+      "ai";
+  }
+}
+
+/* =========================================================
+   11. RESPECT PEOPLE WHO TURN OFF MOTION IN THEIR SETTINGS
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .tools-track {
+    animation: none;
+    width: auto;
+  }
+
+  .tools-group {
+    flex-wrap: wrap;
+  }
+
+  /* Hide the duplicate copy, since nothing scrolls any more */
+  .tools-group[aria-hidden="true"] {
+    display: none;
+  }
+
+  .contact-mail {
+    transition: none;
+  }
+}
